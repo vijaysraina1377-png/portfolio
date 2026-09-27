@@ -1,0 +1,765 @@
+/* =========================================================
+   C VIJAY DEVOPS PORTFOLIO
+   SCRIPT.JS
+========================================================= */
+
+
+document.addEventListener("DOMContentLoaded", function () {
+
+
+    /* =====================================================
+       HEADER
+    ===================================================== */
+
+    const header =
+        document.querySelector(".header");
+
+
+    function updateHeader() {
+
+        if (!header) return;
+
+
+        if (window.scrollY > 30) {
+
+            header.classList.add("scrolled");
+
+        } else {
+
+            header.classList.remove("scrolled");
+
+        }
+
+    }
+
+
+    window.addEventListener(
+        "scroll",
+        updateHeader
+    );
+
+
+    updateHeader();
+
+
+
+    /* =====================================================
+       MOBILE MENU
+    ===================================================== */
+
+    const menuToggle =
+        document.querySelector(".menu-toggle");
+
+    const navMenu =
+        document.querySelector(".nav-menu");
+
+
+    if (menuToggle && navMenu) {
+
+
+        menuToggle.addEventListener(
+            "click",
+            function () {
+
+                navMenu.classList.toggle(
+                    "active"
+                );
+
+                menuToggle.classList.toggle(
+                    "active"
+                );
+
+            }
+        );
+
+
+        const navLinks =
+            document.querySelectorAll(
+                ".nav-link"
+            );
+
+
+        navLinks.forEach(
+            function (link) {
+
+                link.addEventListener(
+                    "click",
+                    function () {
+
+                        navMenu.classList.remove(
+                            "active"
+                        );
+
+                        menuToggle.classList.remove(
+                            "active"
+                        );
+
+                    }
+                );
+
+            }
+        );
+
+    }
+
+
+
+    /* =====================================================
+       SMOOTH SCROLL
+    ===================================================== */
+
+    const links =
+        document.querySelectorAll(
+            'a[href^="#"]'
+        );
+
+
+    links.forEach(
+        function (link) {
+
+            link.addEventListener(
+                "click",
+                function (event) {
+
+                    const targetId =
+                        link.getAttribute(
+                            "href"
+                        );
+
+
+                    if (
+                        !targetId ||
+                        targetId === "#"
+                    ) {
+
+                        return;
+
+                    }
+
+
+                    const target =
+                        document.querySelector(
+                            targetId
+                        );
+
+
+                    if (!target) {
+
+                        return;
+
+                    }
+
+
+                    event.preventDefault();
+
+
+                    const headerHeight =
+                        header
+                            ? header.offsetHeight
+                            : 0;
+
+
+                    const position =
+                        target.offsetTop -
+                        headerHeight;
+
+
+                    window.scrollTo({
+
+                        top: position,
+
+                        behavior: "smooth"
+
+                    });
+
+                }
+            );
+
+        }
+    );
+
+
+
+    /* =====================================================
+       ACTIVE NAVIGATION
+    ===================================================== */
+
+    const sections =
+        document.querySelectorAll(
+            "section[id]"
+        );
+
+    const navLinks =
+        document.querySelectorAll(
+            ".nav-link"
+        );
+
+
+    function updateActiveLink() {
+
+        let current = "";
+
+
+        sections.forEach(
+            function (section) {
+
+                const top =
+                    section.offsetTop - 150;
+
+                const bottom =
+                    top +
+                    section.offsetHeight;
+
+
+                if (
+                    window.scrollY >= top &&
+                    window.scrollY < bottom
+                ) {
+
+                    current =
+                        section.getAttribute(
+                            "id"
+                        );
+
+                }
+
+            }
+        );
+
+
+        navLinks.forEach(
+            function (link) {
+
+                link.classList.remove(
+                    "active"
+                );
+
+
+                if (
+                    link.getAttribute("href") ===
+                    "#" + current
+                ) {
+
+                    link.classList.add(
+                        "active"
+                    );
+
+                }
+
+            }
+        );
+
+    }
+
+
+    window.addEventListener(
+        "scroll",
+        updateActiveLink
+    );
+
+
+    updateActiveLink();
+
+
+
+    /* =====================================================
+       BACK TO TOP
+    ===================================================== */
+
+    const backToTop =
+        document.getElementById(
+            "backToTop"
+        );
+
+
+    if (backToTop) {
+
+
+        window.addEventListener(
+            "scroll",
+            function () {
+
+                if (
+                    window.scrollY > 500
+                ) {
+
+                    backToTop.classList.add(
+                        "show"
+                    );
+
+                } else {
+
+                    backToTop.classList.remove(
+                        "show"
+                    );
+
+                }
+
+            }
+        );
+
+
+        backToTop.addEventListener(
+            "click",
+            function () {
+
+                window.scrollTo({
+
+                    top: 0,
+
+                    behavior: "smooth"
+
+                });
+
+            }
+        );
+
+    }
+
+
+
+    /* =====================================================
+       COUNTER ANIMATION
+    ===================================================== */
+
+    const counters =
+        document.querySelectorAll(
+            "[data-count]"
+        );
+
+
+    let counterStarted = false;
+
+
+    function startCounters() {
+
+
+        if (counterStarted) return;
+
+
+        const experience =
+            document.querySelector(
+                ".experience-section"
+            );
+
+
+        if (!experience) return;
+
+
+        const position =
+            experience.getBoundingClientRect()
+                .top;
+
+
+        if (
+            position <
+            window.innerHeight * 0.8
+        ) {
+
+            counterStarted = true;
+
+
+            counters.forEach(
+                function (counter) {
+
+                    const target =
+                        Number(
+                            counter.getAttribute(
+                                "data-count"
+                            )
+                        );
+
+
+                    let current = 0;
+
+
+                    const duration = 1200;
+
+                    const step =
+                        Math.max(
+                            1,
+                            Math.ceil(
+                                target /
+                                (duration / 30)
+                            )
+                        );
+
+
+                    const timer =
+                        setInterval(
+                            function () {
+
+                                current += step;
+
+
+                                if (
+                                    current >= target
+                                ) {
+
+                                    current =
+                                        target;
+
+                                    clearInterval(
+                                        timer
+                                    );
+
+                                }
+
+
+                                counter.textContent =
+                                    current;
+
+                            },
+                            30
+                        );
+
+                }
+            );
+
+        }
+
+    }
+
+
+    window.addEventListener(
+        "scroll",
+        startCounters
+    );
+
+
+    startCounters();
+
+
+
+    /* =====================================================
+       CONTACT FORM
+    ===================================================== */
+
+    const contactForm =
+        document.getElementById(
+            "contactForm"
+        );
+
+
+    if (contactForm) {
+
+
+        contactForm.addEventListener(
+            "submit",
+            function (event) {
+
+                event.preventDefault();
+
+
+                const name =
+                    document.getElementById(
+                        "name"
+                    ).value.trim();
+
+
+                const email =
+                    document.getElementById(
+                        "email"
+                    ).value.trim();
+
+
+                const subject =
+                    document.getElementById(
+                        "subject"
+                    ).value.trim();
+
+
+                const message =
+                    document.getElementById(
+                        "message"
+                    ).value.trim();
+
+
+                const formMessage =
+                    document.getElementById(
+                        "formMessage"
+                    );
+
+
+                if (
+                    name === "" ||
+                    email === "" ||
+                    subject === "" ||
+                    message === ""
+                ) {
+
+                    formMessage.textContent =
+                        "Please fill all the fields.";
+
+                    return;
+
+                }
+
+
+                const emailPattern =
+                    /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+
+                if (
+                    !emailPattern.test(email)
+                ) {
+
+                    formMessage.textContent =
+                        "Please enter a valid email.";
+
+                    return;
+
+                }
+
+
+                const mailSubject =
+                    encodeURIComponent(
+                        subject
+                    );
+
+
+                const mailBody =
+                    encodeURIComponent(
+                        "Hello Vijay,\n\n" +
+
+                        "Name: " +
+                        name +
+                        "\n" +
+
+                        "Email: " +
+                        email +
+                        "\n\n" +
+
+                        "Message:\n" +
+                        message
+                    );
+
+
+                const mailto =
+                    "mailto:vijaysraina1377@gmail.com" +
+
+                    "?subject=" +
+                    mailSubject +
+
+                    "&body=" +
+                    mailBody;
+
+
+                formMessage.textContent =
+                    "Opening your email application...";
+
+
+                showToast(
+                    "Opening Email..."
+                );
+
+
+                setTimeout(
+                    function () {
+
+                        window.location.href =
+                            mailto;
+
+                    },
+                    700
+                );
+
+            }
+        );
+
+    }
+
+
+
+    /* =====================================================
+       TOAST
+    ===================================================== */
+
+    const toast =
+        document.getElementById(
+            "toast"
+        );
+
+
+    const toastText =
+        document.getElementById(
+            "toastText"
+        );
+
+
+    let toastTimer;
+
+
+    function showToast(message) {
+
+
+        if (!toast) return;
+
+
+        if (toastText) {
+
+            toastText.textContent =
+                message;
+
+        }
+
+
+        toast.classList.add(
+            "show"
+        );
+
+
+        clearTimeout(
+            toastTimer
+        );
+
+
+        toastTimer =
+            setTimeout(
+                function () {
+
+                    toast.classList.remove(
+                        "show"
+                    );
+
+                },
+                3000
+            );
+
+    }
+
+
+
+    /* =====================================================
+       PROJECT LINKS
+    ===================================================== */
+
+    const projectLinks =
+        document.querySelectorAll(
+            ".project-link"
+        );
+
+
+    projectLinks.forEach(
+        function (link) {
+
+            link.addEventListener(
+                "click",
+                function (event) {
+
+                    const href =
+                        link.getAttribute(
+                            "href"
+                        );
+
+
+                    if (
+                        !href ||
+                        href === "#"
+                    ) {
+
+                        event.preventDefault();
+
+
+                        showToast(
+                            "Project link will be added soon."
+                        );
+
+                    }
+
+                }
+            );
+
+        }
+    );
+
+
+
+    /* =====================================================
+       RESUME CHECK
+    ===================================================== */
+
+    const resumeLinks =
+        document.querySelectorAll(
+            'a[href="assets/resume.pdf"]'
+        );
+
+
+    resumeLinks.forEach(
+        function (link) {
+
+            link.addEventListener(
+                "click",
+                function () {
+
+                    showToast(
+                        "Opening resume..."
+                    );
+
+                }
+            );
+
+        }
+    );
+
+
+
+    /* =====================================================
+       YEAR
+    ===================================================== */
+
+    const year =
+        document.getElementById(
+            "year"
+        );
+
+
+    if (year) {
+
+        year.textContent =
+            new Date().getFullYear();
+
+    }
+
+
+
+    /* =====================================================
+       ESCAPE KEY CLOSE MOBILE MENU
+    ===================================================== */
+
+    document.addEventListener(
+        "keydown",
+        function (event) {
+
+            if (
+                event.key === "Escape"
+            ) {
+
+                if (navMenu) {
+
+                    navMenu.classList.remove(
+                        "active"
+                    );
+
+                }
+
+
+                if (menuToggle) {
+
+                    menuToggle.classList.remove(
+                        "active"
+                    );
+
+                }
+
+            }
+
+        }
+    );
+
+
+    console.log(
+        "C Vijay DevOps Portfolio loaded successfully."
+    );
+
+});
